@@ -20,7 +20,8 @@ const initState = {
     month: '07',
     day: '04',
     hour: '10',
-    minute: '05'
+    minute: '05',
+    amount: 10
   },
   timeStampValid: true,
   timeStampError: '',
@@ -40,6 +41,12 @@ export default (state = initState, action) => {
       return {
         ...state,
         timeStamps: {...action.payload}
+      }
+    }
+    case 'UPDATE_VALIDATION': {
+      return {
+        ...state, 
+        ...action.payload
       }
     }
     default: 

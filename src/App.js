@@ -29,7 +29,8 @@ const inputValidator = {
     formatError: (type) => {
       return `Time stamp not correct. Please check ${(type ? type : this.props.timeStampErrorFields[0])} format.`
     },
-    timeError: `Please select time stamp in future.`
+    timeError: `Please select time stamp in future.`,
+    amountError: 'Amount is not correct. Please check the amount value and try again'
   }
 }
 
@@ -43,34 +44,7 @@ class App extends Component {
     console.log('COMPONENT READY');
   }
 
-  /* state = {
-    transactions: [
-      {transactionId: '123', amount: '120', type: 'Refund'},
-      {transactionId: '456', amount: '20', type: 'Refund'},
-      {transactionId: '789', amount: '12', type: 'Fund'},
-    ],
-    accounts: [
-      {
-        id: 'A',
-        balance: 100
-      },
-      {
-        id: 'B',
-        balance: 0
-      }
-    ],
-    timeStamps: {
-      year: '18',
-      month: '07',
-      day: '04',
-      hour: '10',
-      minute: '05'
-    },
-    timeStampValid: true,
-    timeStampError: '',
-    timeStampErrorFields: []    
-  } */
-
+ 
   validateFuture = () => {
     // Get now and compare this.state.timeStamps
 
@@ -89,23 +63,23 @@ class App extends Component {
 
     if (day > monthDays) {
       // Need to update state
-      this.props.updateValidation({
+      return this.props.updateValidation({
         timeStampValid: false,
         timeStampError: `Time stamp not correct. Please check day format.`,
-        timeStampErrorFields: [...this.state.timeStampErrorFields, type]
+        timeStampErrorFields: [...this.props.timeStampErrorFields, type]
       })
 
     }
 
-    /* let timeStampErrorFields = this.state.timeStampErrorFields.filter(t => t !== type);
+    let timeStampErrorFields = this.props.timeStampErrorFields.filter(t => t !== type);
 
-    this.setState({
+    return this.props.updateValidation({
       timeStampValid: timeStampErrorFields.length ? false : true,
-      timeStampError: timeStampErrorFields.length ? `Time stamp not correct. Please check ${this.state.timeStampErrorFields[0]} format.` : '',
+      timeStampError: timeStampErrorFields.length ? `Time stamp not correct. Please check ${this.props.timeStampErrorFields[0]} format.` : '',
       timeStampErrorFields: [...timeStampErrorFields]
     }, () => {
       this.validateFuture();
-    }) */
+    })
 
     // Validate
     // get Number of days in the current month
@@ -114,57 +88,84 @@ class App extends Component {
   validateInput = (e, type) => {
 
     if (type === 'day') return this.validateDays(e);
-    console.log('We are here');
     if (Number(e) < inputValidator[type].min) {
-      this.props.updateValidation({
+      return this.props.updateValidation({
         timeStampValid: false,
         timeStampError: `Time stamp not correct. Please check ${type} format.`,
-        timeStampErrorFields: [...this.state.timeStampErrorFields, type]
+        timeStampErrorFields: [...this.props.timeStampErrorFields, type]
       })
 
     }
-    /* 
-     if(Number(e) > inputValidator[type].max){
-       return this.setState({
-         timeStampValid: false,
-         timeStampError: `Time stamp not correct. Please check ${type} format.`,
-         timeStampErrorFields: [...this.state.timeStampErrorFields, type]
-       })
-     }
- 
-     if(String(e).length > 2) {
-       return this.setState({
-         timeStampValid: false,
-         timeStampError: `Time ${type} not correct`,
-         timeStampErrorFields: [...this.state.timeStampErrorFields, type]
-       })
-     }
- 
-     let timeStampErrorFields = this.state.timeStampErrorFields.filter(t => t !== type);
-     
-     this.setState({
-       timeStampValid: timeStampErrorFields.length ? false : true,
-       timeStampError: timeStampErrorFields.length ? `Time stamp not correct. Please check ${this.state.timeStampErrorFields[0]} format.` : '',
-       timeStampErrorFields: [...timeStampErrorFields]
-     }, () => {
-       if (type === 'month' || type === 'year') {
-         this.validateDays();
-       }else{
-         this.validateFuture();
-       }
-     }) */
+
+    if (Number(e) > inputValidator[type].max) {
+      return this.props.updateValidation({
+        timeStampValid: false,
+        timeStampError: `Time stamp not correct. Please check ${type} format.`,
+        timeStampErrorFields: [...this.props.timeStampErrorFields, type]
+      })
+    }
+
+    if (String(e).length > 2) {
+      return this.props.updateValidation({
+        timeStampValid: false,
+        timeStampError: `Time ${type} not correct`,
+        timeStampErrorFields: [...this.props.timeStampErrorFields, type]
+      })
+    }
+
+    let timeStampErrorFields = this.props.timeStampErrorFields.filter(t => t !== type);
+
+    this.props.updateValidation({
+      timeStampValid: timeStampErrorFields.length ? false : true,
+      timeStampError: timeStampErrorFields.length ? `Time stamp not correct. Please check ${this.props.timeStampErrorFields[0]} format.` : '',
+      timeStampErrorFields: [...timeStampErrorFields]
+    }, () => {
+      if (type === 'month' || type === 'year') {
+        this.validateDays();
+      } else {
+        this.validateFuture();
+      }
+    })
 
   }
 
   setTime = (e, type) => {
     // Remove all non number characters
-    e = e.replace(/[^0-9]+/, '');
+    e = e.replace(/[^0-9]+/, '')
 
-    //this.validateInput(e, type);
+    this.validateInput(e, type)
+
     this.props.updateTime({
-        ...this.props.timeStamps,
-        [type]: e
-    })  
+      ...this.props.timeStamps,
+      [type]: e
+    })
+  }
+
+  setAmount = e => {
+    e = e.replace(/[^0-9]+/, '')
+
+    if(e < 1) {
+      this.props.updateValidation({
+        timeStampValid: false,
+        timeStampError: inputValidator.errorMessages.amountError,
+        timeStampErrorFields: [...this.props.timeStampErrorFields,'amount']
+      });
+    }else{
+      let timeStampErrorFields = this.props.timeStampErrorFields.filter(t => t !== 'amount');
+
+      this.props.updateValidation({
+        timeStampValid: timeStampErrorFields.length ? false : true,
+        timeStampError: timeStampErrorFields.length ? `Time stamp not correct. Please check ${this.props.timeStampErrorFields[0]} format.` : '',
+        timeStampErrorFields: [...timeStampErrorFields]
+      })
+    }
+
+    this.props.updateTime({
+      ...this.props.timeStamps,
+      amount : e
+    })
+
+    console.log('Setting amount');
   }
 
   addTransaction = type => {
@@ -194,6 +195,7 @@ class App extends Component {
                   timeStampValid={this.props.timeStampValid}
                   timeStampError={this.props.timeStampError}
                   timeStampErrorFields={this.props.timeStampErrorFields}
+                  onAmountChange={this.setAmount}
                   onInputTimeChange={this.setTime} />
               </div>
               <div className="col-sm-6 offset-sm-3 action-buttons">

@@ -8,8 +8,11 @@ import registerServiceWorker from './registerServiceWorker';
 import store from './store';
 
 const updateValidation = validation => {
-  console.log('We are about to update the validation');
-
+  console.log('SENDING VALIDATION', validation);
+  store.dispatch({
+    type: 'UPDATE_VALIDATION', 
+    payload: validation
+  })
 }
 
 const updateTime = time => {
@@ -21,7 +24,7 @@ const updateTime = time => {
 
 const render = () => {
   const state = store.getState();
-  ReactDOM.render(<App  {...state} updateTime={updateTime} updateValidation={updateValidation}/>, document.getElementById('root'));
+  ReactDOM.render(<App  {...state} updateTime={updateTime} updateValidation={updateValidation} />, document.getElementById('root'));
 }
 
 render();

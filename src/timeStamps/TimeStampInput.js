@@ -54,7 +54,21 @@ const TimeStampInput = props => {
           onInputTimeChange={(e) => {
             props.onInputTimeChange(e, 'minute')
           }}
-        />        
+        />
+        <span>  </span>
+        <div className="time-input-container amount">
+          <label className="time-input-label">Amount</label>
+          <input
+            type="text"
+            className={(props.timeStampErrorFields.indexOf('amount') > -1) ? 'error' : ''} 
+            placeholder="--"
+            value={props.amount} 
+            onChange={(e) => {
+              return props.onAmountChange(e.currentTarget.value);
+            }}
+          />$
+        </div>
+
       </div>
       <div className="time-stamp-error-container">
         {(!props.timeStampValid ? props.timeStampError : '')}

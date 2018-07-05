@@ -25,6 +25,13 @@ input[type="text"] {
   text-align: center;
   
 }
+.time-input-container.amount input{
+  width: 80px;
+}
+
+.time-input-container.amount{
+  margin-left: 20px;
+}
 
 input:focus, textarea:focus, select:focus {
     outline-offset: 0;
