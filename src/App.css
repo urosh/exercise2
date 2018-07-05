@@ -1,0 +1,54 @@
+
+  .content{
+    text-align: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f2f2f2; 
+  }
+
+.App {
+  justify-content: center;  
+  align-items: center;
+  display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+  height: 100%;
+}
+
+
+
+.custom-btn{
+	border-radius: 0;
+  box-shadow: none;
+  text-shadow: none;
+  background-image: none;
+  background: none;
+  background-color: steelblue;
+  color: #f2f2f2;
+  border: none;
+  text-transform: uppercase;
+  width: 140px;
+  border: none;
+  outline: 0 !important;
+  padding: 10px 12px;
+}
+
+.refund-btn{
+  margin-left: 5px;
+}
+
+.fund-btn{
+  margin-right: 5px;
+}
+
+.custom-btn.disabled{
+  background-color: #c6c6ce;
+}
+
+
+
+
+

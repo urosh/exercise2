@@ -1,0 +1,7 @@
+.history-table-container{
+  margin-top: 40px;
+}
+
+.history-table-container .react-bs-table-bordered{
+  border-radius: 0;
+}

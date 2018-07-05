@@ -1,0 +1,18 @@
+.balance-account-text{
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.balance-account-id{
+  font-size: 16px;
+   font-weight: bold;
+  text-transform: uppercase;
+}
+
+.balance-value-container{
+  line-height: 44px;
+}
+.balance-value{
+  font-size: 44px;
+}
