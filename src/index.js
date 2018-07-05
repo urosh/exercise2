@@ -5,6 +5,27 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css'
 import registerServiceWorker from './registerServiceWorker';
+import store from './store';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const updateValidation = validation => {
+  console.log('We are about to update the validation');
+
+}
+
+const updateTime = time => {
+  store.dispatch({
+    type: 'UPDATE_TIME_STAMP',
+    payload: time
+  })
+}
+
+const render = () => {
+  const state = store.getState();
+  ReactDOM.render(<App  {...state} updateTime={updateTime} updateValidation={updateValidation}/>, document.getElementById('root'));
+}
+
+render();
+
+store.subscribe(render);
+
 registerServiceWorker();
