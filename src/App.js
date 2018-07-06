@@ -3,6 +3,8 @@ import './App.css';
 import Balance from './balances/Balance';
 import TimeStampInput from './timeStamps/TimeStampInput';
 import HistoryTable from './history/HistoryTable';
+import { connect } from 'react-redux';
+import { setValidation, setTimeStamp, addTransaction } from './reducers/transactions';
 
 const inputValidator = {
   'year': {
@@ -63,7 +65,7 @@ class App extends Component {
 
     if (day > monthDays) {
       // Need to update state
-      return this.props.updateValidation({
+      return this.props.setValidation({
         timeStampValid: false,
         timeStampError: `Time stamp not correct. Please check day format.`,
         timeStampErrorFields: [...this.props.timeStampErrorFields, type]
@@ -73,7 +75,7 @@ class App extends Component {
 
     let timeStampErrorFields = this.props.timeStampErrorFields.filter(t => t !== type);
 
-    return this.props.updateValidation({
+    return this.props.setValidation({
       timeStampValid: timeStampErrorFields.length ? false : true,
       timeStampError: timeStampErrorFields.length ? `Time stamp not correct. Please check ${this.props.timeStampErrorFields[0]} format.` : '',
       timeStampErrorFields: [...timeStampErrorFields]
@@ -89,7 +91,7 @@ class App extends Component {
 
     if (type === 'day') return this.validateDays(e);
     if (Number(e) < inputValidator[type].min) {
-      return this.props.updateValidation({
+      return this.props.setValidation({
         timeStampValid: false,
         timeStampError: `Time stamp not correct. Please check ${type} format.`,
         timeStampErrorFields: [...this.props.timeStampErrorFields, type]
@@ -98,7 +100,7 @@ class App extends Component {
     }
 
     if (Number(e) > inputValidator[type].max) {
-      return this.props.updateValidation({
+      return this.props.setValidation({
         timeStampValid: false,
         timeStampError: `Time stamp not correct. Please check ${type} format.`,
         timeStampErrorFields: [...this.props.timeStampErrorFields, type]
@@ -106,7 +108,7 @@ class App extends Component {
     }
 
     if (String(e).length > 2) {
-      return this.props.updateValidation({
+      return this.props.setValidation({
         timeStampValid: false,
         timeStampError: `Time ${type} not correct`,
         timeStampErrorFields: [...this.props.timeStampErrorFields, type]
@@ -115,7 +117,7 @@ class App extends Component {
 
     let timeStampErrorFields = this.props.timeStampErrorFields.filter(t => t !== type);
 
-    this.props.updateValidation({
+    this.props.setValidation({
       timeStampValid: timeStampErrorFields.length ? false : true,
       timeStampError: timeStampErrorFields.length ? `Time stamp not correct. Please check ${this.props.timeStampErrorFields[0]} format.` : '',
       timeStampErrorFields: [...timeStampErrorFields]
@@ -135,7 +137,7 @@ class App extends Component {
 
     this.validateInput(e, type)
 
-    this.props.updateTime({
+    this.props.setTimeStamp({
       ...this.props.timeStamps,
       [type]: e
     })
@@ -145,7 +147,7 @@ class App extends Component {
     e = e.replace(/[^0-9]+/, '')
 
     if(e < 1) {
-      this.props.updateValidation({
+      this.props.setValidation({
         timeStampValid: false,
         timeStampError: inputValidator.errorMessages.amountError,
         timeStampErrorFields: [...this.props.timeStampErrorFields,'amount']
@@ -153,14 +155,14 @@ class App extends Component {
     }else{
       let timeStampErrorFields = this.props.timeStampErrorFields.filter(t => t !== 'amount');
 
-      this.props.updateValidation({
+      this.props.setValidation({
         timeStampValid: timeStampErrorFields.length ? false : true,
         timeStampError: timeStampErrorFields.length ? `Time stamp not correct. Please check ${this.props.timeStampErrorFields[0]} format.` : '',
         timeStampErrorFields: [...timeStampErrorFields]
       })
     }
 
-    this.props.updateTime({
+    this.props.setTimeStamp({
       ...this.props.timeStamps,
       amount : e
     })
@@ -169,6 +171,7 @@ class App extends Component {
 
   addTransaction = type => {
     if (this.props.timeStampValid) {
+      this.props.addTransaction({ transactionId: '448', amount: '432', type: 'Refund' },)
       // Need to post data to the server
     }
     /* if(this.state.timeStampValid) {
@@ -223,5 +226,11 @@ class App extends Component {
   }
 }
 
-
-export default App;
+export default connect(
+  (state) => state,
+  {
+    setValidation,
+    setTimeStamp,
+    addTransaction
+  }
+)(App);
