@@ -165,12 +165,11 @@ class App extends Component {
       amount : e
     })
 
-    console.log('Setting amount');
   }
 
   addTransaction = type => {
     if (this.props.timeStampValid) {
-
+      // Need to post data to the server
     }
     /* if(this.state.timeStampValid) {
       console.log('WE CAN ADD TRANSACTION');

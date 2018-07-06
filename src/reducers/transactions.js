@@ -28,22 +28,31 @@ const initState = {
   timeStampErrorFields: []    
 }
 
+const  ADD_TRANSACTION = 'ADD_TRANSACTION';
+const  UPDATE_TIME_STAMP = 'UPDATE_TIME_STAMP';
+const  UPDATE_VALIDATION = 'UPDATE_VALIDATION';
+
+
+export const addTransaction = val => ({ type: ADD_TRANSACTION, payload: val});
+export const setTimeStamp = val => ({type: UPDATE_TIME_STAMP, payload: val});
+export const setValidation = val => ({type: UPDATE_VALIDATION, payload: val});
+
 // Four objects: transactions, accounts, timeStamps, validation
 export default (state = initState, action) => {
   switch (action.type) {
-    case 'ADD_TRANSACTION': {
+    case ADD_TRANSACTION: {
       return {
         ...state,
         transactions: state.transactions.concat(action.payload) 
       }
     }
-    case 'UPDATE_TIME_STAMP': {
+    case UPDATE_TIME_STAMP: {
       return {
         ...state,
         timeStamps: {...action.payload}
       }
     }
-    case 'UPDATE_VALIDATION': {
+    case UPDATE_VALIDATION: {
       return {
         ...state, 
         ...action.payload
