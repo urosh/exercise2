@@ -1,10 +1,5 @@
 const initState = {
-  transactions: [
-    { transactionId: '123', amount: '120', type: 'Refund' },
-    { transactionId: '456', amount: '20', type: 'Refund' },
-    { transactionId: '789', amount: '12', type: 'Fund' },
-    { transactionId: '118', amount: '32', type: 'Refund' },
-  ],
+  transactions: [],
   accounts: [
     {
       id: 'A',
@@ -20,7 +15,7 @@ const initState = {
     month: '07',
     day: '04',
     hour: '10',
-    minute: '05',
+    minutes: '05',
     amount: 10
   },
   timeStampValid: true,

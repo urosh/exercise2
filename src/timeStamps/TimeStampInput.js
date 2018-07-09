@@ -208,12 +208,12 @@ const TimeStampInput = props => {
         />
         :
         <TimeInput
-          inputValue={props.timeStamps.minute}
+          inputValue={props.timeStamps.minutes}
           range={[0, 59]}
           label="MM"
-          inputInvalid={(props.timeStampErrorFields.indexOf('minute') > -1)}
+          inputInvalid={(props.timeStampErrorFields.indexOf('minutes') > -1)}
           onInputTimeChange={(e) => {
-            setTime(e, 'minute')
+            setTime(e, 'minutes')
           }}
         />
         <span>  </span>

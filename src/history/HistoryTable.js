@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './History.css';
+import { connect } from 'react-redux';
 
 const HistoryTable = props => {
  
@@ -16,4 +17,6 @@ const HistoryTable = props => {
   );
 }
 
-export default HistoryTable;
+export default connect((state) => ({
+  transactions: state.transactions
+}))(HistoryTable);

@@ -4,10 +4,19 @@ import BalanceContainer from './balances/BalanceContainer';
 import TimeStampInput from './timeStamps/TimeStampInput';
 import HistoryTable from './history/HistoryTable';
 import ButtonContainer from './buttons/ButtonsContainer';
-
+import io from 'socket.io-client';
 
 
 class App extends Component {
+  componentDidMount() {
+    let socket = io('ws://localhost:3232', {
+      path: '/transfer/socket.io',
+    });
+
+    socket.on('connect', data => {
+      console.log('We are connected');
+    })
+  }
   
   render() {
     return (
@@ -23,10 +32,10 @@ class App extends Component {
               </div>
               <div className="col-sm-6 offset-sm-3 action-buttons">
                 <ButtonContainer />
-                
+
               </div>
               <div className="col-sm-6 offset-sm-3 history">
-                <HistoryTable transactions={this.props.transactions} />
+                <HistoryTable />
               </div>
               <div className="col-sm-6 offset-sm-3 timeline">
                 Timeline
@@ -40,13 +49,3 @@ class App extends Component {
 }
 
 export default App;
-/* 
-export default connect(
-  (state) => state,
-  {
-    setValidation,
-    setTimeStamp,
-    addTransaction
-  }
-)(App);
- */
